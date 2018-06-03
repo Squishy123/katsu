@@ -6,6 +6,7 @@ import Header from './components/header.js'
 
 //pages
 import Home from './pages/home.js'
+import Redirect from './pages/redirect.js'
 
 const Main = () => (
     <main>
@@ -14,6 +15,7 @@ const Main = () => (
              <Route exact path ='/' component = {Home}/>
              <Route path ='/page1' component = {Home}/>
              <Route path='/api/:id' component ={Home}/>
+             <Route component={Redirect}/>
         </Switch>
     </main>
 )
