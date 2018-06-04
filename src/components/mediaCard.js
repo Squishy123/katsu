@@ -9,8 +9,10 @@ export default class MediaCard extends React.Component {
     render() {
         return (
         <div className="container">
-            <img className="poster" src={this.props.meta.attributes.posterImage.medium}></img>
-            <h5>{this.props.meta.attributes.canonicalTitle}</h5>
+            <div className="card">
+                <img className="poster" src={this.props.meta.attributes.posterImage.medium}></img>
+                <h2 className="display">{this.props.meta.attributes.canonicalTitle}</h2>
+            </div>
         </div>
         )
     }

@@ -10,7 +10,7 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            recentAnime: [<h3>Recent Anime</h3>]
+            trendingAnime: [<h1 class="display">Trending Anime</h1>]
         }
     } 
 
@@ -19,18 +19,15 @@ class Home extends React.Component {
         let mediaList = items.data.map((e) => {
            return <MediaCard meta={e}/>
         });
-        this.state.recentAnime.push(<div class="mediaList">{mediaList}</div>)
-        render(this.state.recentAnime, document.querySelector('#recentAnime'))
+        this.state.trendingAnime.push(<div class="mediaList">{mediaList}</div>)
+        render(this.state.trendingAnime, document.querySelector('#trendingAnime'))
     }
 
     render() {
         this.loadTrending();
-        return (<div>
-                <div className="jumbotron" id="versionInfo">
-                    <h1>Katsu - Streaming</h1>
-                    <p>Version: Hello Kitty World!</p>
-                </div>
-                <div className="jumbotron" id="recentAnime">
+        return (
+            <div>
+                <div className="jumbotron" id="trendingAnime">
                 </div>
             </div>)
     }

@@ -3,20 +3,15 @@
     padding: 10px;
 }
 
-#versionInfo {
-    background-color: #2774d0; 
-    color: white;
-}
-
 #recentAnime {
-    background-color: #2774d0; 
-    color: white;
+    color: black;
 }
 
 .mediaList {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    padding: 5px;
 }
 
 #recentAnime > h3 {

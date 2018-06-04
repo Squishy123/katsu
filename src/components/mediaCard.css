@@ -1,5 +1,23 @@
 .container {
-    width: 25%;
+    text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+
+    color: rgb(70, 68, 68);
+    background-color: #e9ecef;
+
+    overflow: hidden;
+    margin: 5px;
+    border-radius: .3rem
+}
+
+.card {
+    display: block;
+    padding: 10px;
+}
+
+.display {
+    font-weight: 300;
 }
 
 .poster {
