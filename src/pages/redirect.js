@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 const Home = () => (
     <div>
         <h1 className="display-3">This page does not exist...</h1>

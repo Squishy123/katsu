@@ -6,7 +6,7 @@ import Header from './components/header.js'
 
 //pages
 import Home from './pages/home.js'
-import Redirect from './pages/redirect.js'
+//import Redirect from './pages/redirect.js'
 
 const Main = () => (
     <main>
