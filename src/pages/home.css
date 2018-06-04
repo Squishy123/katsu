@@ -1,0 +1,19 @@
+.jumbotron {
+    margin: 10px;
+    padding: 10px;
+}
+
+#versionInfo {
+    background-color: #2774d0; 
+    color: white;
+}
+
+#recentAnime {
+    background-color: #2774d0; 
+    color: white;
+}
+
+#recentAnime > h3 {
+    text-decoration: underline;
+    text-decoration-color: #ec3939;
+}

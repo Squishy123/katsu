@@ -1,4 +1,9 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: #a6c9f3;
+}
+
+* {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

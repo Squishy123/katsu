@@ -13,9 +13,12 @@
 }
 
 .navItem {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 24px;
   margin: 10px 10px 10px 10px;
+}
+
+.navItem:hover > a {
+  color: #6705ff;
 }
 
 .navItem > a {
@@ -29,16 +32,21 @@ form {
 }
 
 input {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 16px;
   margin-right: 10px;
 }
 
 button {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 16px;
+  font-size: 18px;
+
+  background-color: white;
+  color: #ffaa05;
   text-decoration: none;
   text-align: center;
   display: inline-block;
   border: none;
+}
+
+button:hover {
+  color: #6705ff;
 }
