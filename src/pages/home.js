@@ -9,6 +9,9 @@ class Home extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            recentAnime: [<h3>Recent Anime</h3>]
+        }
     } 
 
     async loadTrending() {
@@ -16,20 +19,18 @@ class Home extends React.Component {
         let mediaList = items.data.map((e) => {
            return <MediaCard meta={e}/>
         });
-        render(mediaList, document.querySelector('#recentAnime'))
-        //console.log(items)
+        this.state.recentAnime.push(<div class="mediaList">{mediaList}</div>)
+        render(this.state.recentAnime, document.querySelector('#recentAnime'))
     }
 
     render() {
         this.loadTrending();
         return (<div>
-                <div class="jumbotron" id="versionInfo">
+                <div className="jumbotron" id="versionInfo">
                     <h1>Katsu - Streaming</h1>
                     <p>Version: Hello Kitty World!</p>
                 </div>
-                <div class="jumbotron" id="recentAnime">
-                    <h3>Recent Anime</h3>
-                    
+                <div className="jumbotron" id="recentAnime">
                 </div>
             </div>)
     }

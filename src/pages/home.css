@@ -13,6 +13,12 @@
     color: white;
 }
 
+.mediaList {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
 #recentAnime > h3 {
     text-decoration: underline;
     text-decoration-color: #ec3939;

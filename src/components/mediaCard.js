@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './mediaCard.css';
 
 export default class MediaCard extends React.Component {
     constructor(props) {
@@ -7,8 +8,8 @@ export default class MediaCard extends React.Component {
 
     render() {
         return (
-        <div>
-            <img src={this.props.meta.attributes.posterImage.medium}></img>
+        <div className="container">
+            <img className="poster" src={this.props.meta.attributes.posterImage.medium}></img>
             <h5>{this.props.meta.attributes.canonicalTitle}</h5>
         </div>
         )
