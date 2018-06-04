@@ -16,19 +16,17 @@ export default class Header extends React.Component {
             <div className="navbar" role="navigation">
                 <div className="navItem">
                     <a href="/">
-                        <FontAwesomeIcon icon={faSlidersH}/>
-                        Browse
+                        <FontAwesomeIcon icon={faSlidersH}/> Browse
                    </a>
                 </div>
                 <div className="navItem">
                     <a href="/">
-                        <FontAwesomeIcon icon={faCalendarAlt}/>
-                        Schedule
+                        <FontAwesomeIcon icon={faCalendarAlt}/> Schedule
                     </a>
                 </div>
-                <div className="navItem logo">
+                <div className="logo">
                     <a href="/">
-                        <img src="/assets/katsu-logo.svg" width="50" height="50"></img>
+                        <img src="/assets/katsu-logo.svg" width="45" height="45"></img>
                     </a>
                 </div>
                 <div className="navItem">
