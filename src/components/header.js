@@ -1,53 +1,50 @@
 import React from 'react';
-import { Collapse,
-    Navbar,
-    NavbarToggler,
-    NavbarBrand,
-    Nav,
-    NavItem,
-    NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem } from 'reactstrap';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+import { faHome, faSearch, faUserCircle, faCalendarAlt, faSlidersH} from '@fortawesome/fontawesome-free-solid';
+
+//style
+import styles from './header.css';
 
 export default class Header extends React.Component {
         constructor(props) {
             super(props);
-            
-            //manage toggle
-            this.toggle = this.toggle.bind(this);
-            this.state = {
-                isOpen:  false
-            }
         }
-
-        toggle() {
-            this.setState({
-                isOpen: !this.state.isOpen
-            })
+        search() {
+            console.log("Searching...")
         }
-
         render = () => (
-            <div>
-                <Navbar color="light" light expand="md">
-                    <NavbarBrand href="/">Amine
-                    </NavbarBrand>
-                    <NavbarToggler onClick={this.toggle}/>
-                    <Collapse isOpen={this.state.isOpen} navbar>
-                        <Nav className="ml-auto" navbar>
-                            <NavItem>
-                                <NavLink href="/">Home</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="/page1">Page 1</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink href="/page1">Page 2</NavLink>
-                            </NavItem>
-                        </Nav>
-                    </Collapse>
-                </Navbar>
+            <div className="navbar" role="navigation">
+                <div className="navItem">
+                    <a href="/">
+                        <FontAwesomeIcon icon={faSlidersH}/>
+                        Browse
+                   </a>
+                </div>
+                <div className="navItem">
+                    <a href="/">
+                        <FontAwesomeIcon icon={faCalendarAlt}/>
+                        Schedule
+                    </a>
+                </div>
+                <div className="navItem logo">
+                    <a href="/">
+                        <img src="/assets/katsu-logo.svg" width="50" height="50"></img>
+                    </a>
+                </div>
+                <div className="navItem">
+                    <form>
+                        <input placeholder="Search Anime"/>
+                        <button type="button" onClick={this.search}>
+                            <FontAwesomeIcon icon={faSearch}/>
+                        </button>
+                    </form>
+                </div>
+                <div className="navItem">
+                    <a href="/">
+                        <FontAwesomeIcon icon={faUserCircle}/>
+                    </a>
+                </div>
+
             </div>
         )
 }

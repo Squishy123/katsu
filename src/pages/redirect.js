@@ -1,13 +1,10 @@
 import React from 'react';
-import { Jumbotron } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import Button from '@material-ui/core/Button';
 const Home = () => (
     <div>
-        <Jumbotron>
-            <h1 className="display-3">404</h1>
-            <p className="lead">Version Katsu</p>
-        </Jumbotron>
+        <h1 className="display-3">This page does not exist...</h1>
+        <hr className="my-2" />
+        <Button color="primary" href="/">Click to return to Home Page</Button>
     </div>
 )
 

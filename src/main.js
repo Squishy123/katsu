@@ -15,7 +15,7 @@ const Main = () => (
              <Route exact path ='/' component = {Home}/>
              <Route path ='/page1' component = {Home}/>
              <Route path='/api/:id' component ={Home}/>
-             <Route component={Redirect}/>
+            {/*<Route component={Redirect}/>*/}
         </Switch>
     </main>
 )
