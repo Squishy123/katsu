@@ -10,9 +10,9 @@ export default class MediaCard extends React.Component {
         return (
         <div className="container">
             <div className="card">
-                <img className="poster" src={this.props.meta.attributes.posterImage.medium}></img>
-                <h2 className="display">{this.props.meta.attributes.canonicalTitle}</h2>
-                <a href={`/animes/${this.props.meta.id}/${this.props.meta.attributes.canonicalTitle}`}>Watch Now</a>
+                <img className={styles.poster} src={this.props.meta.attributes.posterImage.medium}></img>
+                <h4 className={styles.display}>{this.props.meta.attributes.canonicalTitle}</h4>
+                <a className="btn" href={`/animes/${this.props.meta.id}/${this.props.meta.attributes.canonicalTitle}`}>Watch Now</a>
             </div>
         </div>
         )

@@ -10,7 +10,7 @@ class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            trendingAnime: [<h1 className="display">Trending Anime</h1>]
+            trendingAnime: [<h1 className={styles.display}>Trending Anime</h1>]
         }
     } 
 
@@ -26,7 +26,7 @@ class Home extends React.Component {
     render() {
         this.loadTrending();
         return (
-            <div >
+            <div>
                 <div className="jumbotron" id="trendingAnime">
                 </div>
             </div>)

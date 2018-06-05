@@ -1,10 +1,9 @@
 import React from 'react';
-const Home = () => (
+const Redirect = () => (
     <div>
-        <h1 className="display-3">This page does not exist...</h1>
-        <hr className="my-2" />
-        <Button color="primary" href="/">Click to return to Home Page</Button>
+        <h1>You're on the wrong world line</h1>
+        <a color="primary" href="/">Click to go back</a>
     </div>
 )
 
-export default Home;
+export default Redirect;

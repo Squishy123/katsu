@@ -1,5 +1,8 @@
 .jumbotron {
+    margin-left: auto;
+    margin-right: auto;
     padding: 10px;
+    text-align: center;
 }
 
 #recentAnime {
@@ -10,7 +13,6 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    
 }
 
 #recentAnime > h3 {

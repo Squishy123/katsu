@@ -7,7 +7,14 @@ import TopMenu from './components/topMenu.js'
 
 //pages
 import Home from './pages/home.js'
-//import Redirect from './pages/redirect.js'
+import Anime from './pages/anime.js'
+import Redirect from './pages/redirect.js'
+
+const AnimeRouter = (props) => {
+    return (
+        <Anime {...props}/>
+    )
+}
 
 const Main = () => (
     <div id="outer-container" style={{height: "100%", overflow: "hidden"}}>
@@ -17,7 +24,8 @@ const Main = () => (
             <div style={{padding: "50px 0 100px 0"}}>
                 <Switch>
                     <Route exact path ='/' component = {Home}/>
-                    {/*<Route component={Redirect}/>*/}
+                    <Route exact path ='/animes/:id/:keyword' component = {AnimeRouter}/>
+                    <Route component={Redirect}/>
                 </Switch>
             </div>
         </main>
