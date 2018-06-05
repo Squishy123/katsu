@@ -21,21 +21,21 @@ class Home extends React.Component {
         
         for(let i = 0; i < items.data.length; i+=4) {
             let temp = [];
-            mediaList.push((<Tile isParent>{temp}</Tile>));
+            mediaList.push((<Tile isParent style={{padding: 0}}>{temp}</Tile>));
                 items.data.slice(i, i+4).forEach((e) => {
                     temp.push(
                     <Tile isChild isSize={3} style={{padding: "10px"}}>
                         <Card style={{height: "100%"}}>
-                            <CardHeader>
+                            <CardHeader style={{height: "50px"}}>
                                 <CardHeaderTitle>
                                  <Subtitle isSize={5}>{e.attributes.canonicalTitle}</Subtitle>
                                 </CardHeaderTitle>
                             </CardHeader>
                             <CardImage>
-                                <Image src={e.attributes.posterImage.medium}/>
+                                <Image src={e.attributes.posterImage.large}/>
                             </CardImage>
                             <CardContent>
-                                <Button href={`/animes/${e.id}/${e.attributes.canonicalTitle}`} isColor='dark'>
+                                <Button href={`/animes/${e.id}/${e.attributes.canonicalTitle}`} isColor='dark' style={{borderRadius: 0}}>
                                     Watch Now
                                 </Button>
                             </CardContent>
@@ -52,7 +52,7 @@ class Home extends React.Component {
     render() {
         this.loadTrending();
         return (
-            <Container style={{padding: "0 10px 0 10px"}}>
+            <Container style={{padding: "20px"}}>
                 <Tile isAncestor id="trendingList" isVertical>
                 </Tile>
             </Container>)
