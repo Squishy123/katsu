@@ -2,10 +2,62 @@
     top: 0;
     position: fixed;
 
+    display: flex;
+    align-items: center;
+
     margin: 0;
-    padding-left: 100px;
 
     width: 100%;
     height: 75px;
     background-color: #373A47;
+    color: white;
 }
+
+.center {
+    width: 30%;
+    margin-top: 5px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+form {
+    display: flex;
+    width: 100%;
+    z-index: 10;
+    position: relative;
+    box-shadow: 4px 8px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  form > * {
+      border: 0;
+      padding: 0 0 0 10px;
+      background: #fff;
+      font-size: 1rem;
+      border-radius: 0;
+      outline: 0;
+  }
+
+  label {
+      color: black;
+      padding: 10px 0 10px 10px;
+  }
+  
+input {
+    flex-basis: 500px;
+}
+
+button {
+    color: #fff;
+    padding: 10px;
+    border: 1px solid rgba(255,255,255,0.5);
+    -webkit-transition: all 0.2s;
+    -moz-transition: all 0.2s;
+    transition: all 0.2s;
+    background: #373A47;
+  }
+  
+  button:hover {
+    background-color: #d7f442;
+    color: black;
+  }
+  

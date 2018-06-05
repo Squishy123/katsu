@@ -12,7 +12,17 @@ export default class TopMenu extends React.Component {
 
     render = () => (
         <div className="base">
-            <h1>HelloWorld</h1>
+            <div className="center">
+            <form>
+                <label>
+                    <FontAwesomeIcon icon={faSearch}/>
+                </label>
+                <input placeholder="What do you want to watch?"/>
+                <button type="button" onClick={this.search}>
+                    Search
+                </button>
+            </form>
+            </div>
         </div>
     )
 }

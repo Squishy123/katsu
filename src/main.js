@@ -14,7 +14,7 @@ const Main = () => (
         <SideMenu/>
         <TopMenu/>
         <main id="page-wrap">
-            <div style={{padding: "50px 0 0 100px"}}>
+            <div style={{padding: "50px 0 100px 0"}}>
                 <Switch>
                     <Route exact path ='/' component = {Home}/>
                     {/*<Route component={Redirect}/>*/}
