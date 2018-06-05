@@ -1,0 +1,12 @@
+#metadata {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.anime-container {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    text-align: center;
+}
