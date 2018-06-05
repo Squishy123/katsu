@@ -31,6 +31,11 @@ export default class SideMenu extends React.Component {
                 <a className="menu-item" href="/">
                         <FontAwesomeIcon icon={faUserCircle}/> Account
                 </a>
+                <div className="menu-item" id="bot">
+                    <h3>
+                        Version: Katsu
+                    </h3>
+                </div>
             </Menu>
         )
 }

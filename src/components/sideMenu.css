@@ -57,6 +57,14 @@
       color: white;
   }
 
-  .bm-item:hover {
+  a.bm-item:hover {
     color: #d7f442;
+  }
+
+  #bot {
+    margin-bottom: 100px;
+  }
+
+  #bot > h3 {
+    font-weight: 300;
   }
