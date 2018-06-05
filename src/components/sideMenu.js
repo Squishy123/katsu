@@ -18,7 +18,7 @@ export default class SideMenu extends React.Component {
             console.log("Searching...")
         }
         render = () => (
-            <Menu pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
+            <Menu pageWrapId={"page-wrap"} outerContainerId={"outer-container"} style={{zIndex: 200}}>
                 <a className="menu-item logo" href="/">
                     <span style={{fontSize: "30px"}}><span style={{fontWeight: "bold"}}>A</span>mine</span>
                 </a>
