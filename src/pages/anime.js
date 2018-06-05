@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import * as kitsu from '../scripts/kitsu-api.js'
 
-import {Column, Columns, Subtitle, Hero, HeroBody, HeroFooter, Tabs, Container, TabList, Tab, TabLink, Image, Title} from 'bloomer';
+import { Tile, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFooter, Tabs, Container, TabList, Tab, TabLink, Image, Title} from 'bloomer';
 
 //import styles from './anime.css'
 
@@ -47,11 +47,33 @@ import {Column, Columns, Subtitle, Hero, HeroBody, HeroFooter, Tabs, Container, 
     async buildSummary(meta) {
         let summary = (
             <Columns isCentered style={{paddingTop: "10px"}}>
-                <Column isSize='1/2'  hasTextAlign={"centered"}>
-                    <Title isSize={4}>{meta.data.attributes.titles["ja_jp"]}</Title>
+                <Column isSize='1/3'  hasTextAlign={"centered"}>
+                    <Title isSize={4}>Summary: </Title>
                     <Subtitle isSize={5}>
                         {meta.data.attributes.synopsis}
                     </Subtitle>
+                </Column>
+                <Column isSize={3}>
+                    <Tile isAncestor>
+                        <Tile isVertical isParent>
+                            <Tile isChild hasTextAlign={"centered"}>
+                                <Box>
+                                    <Button isFullWidth={true} href={`https://www.youtube.com/watch?v=${meta.data.attributes.youtubeVideoId}`} isColor="dark">Watch Trailer</Button>
+                                </Box>
+                            </Tile>
+                            <Tile isChild>
+                                <Box>
+                                    <Title style={{margin: 5}} isSize={5}>Anime Details</Title>
+                                    <Subtitle style={{margin: 5}} isSize={6}>English: {meta.data.attributes.titles["en"]}</Subtitle>
+                                    <Subtitle  style={{margin: 5}} isSize={6}>Japanese: {meta.data.attributes.titles["ja_jp"]}</Subtitle>
+                                    <Subtitle  style={{margin: 5}} isSize={6}>Type: {meta.data.attributes.showType}</Subtitle>
+                                    <Subtitle  style={{margin: 5}} isSize={6}>Episodes: {meta.data.attributes.episodeCount}</Subtitle>
+                                    <Subtitle  style={{margin: 5}} isSize={6}>Aired: {meta.data.attributes.startDate} to {meta.data.attributes.endDate} </Subtitle>
+                                    <Subtitle  style={{margin: 5}} isSize={6}>Rating: {meta.data.attributes.ageRating}-{meta.data.attributes.ageRatingGuide}</Subtitle>
+                                </Box>
+                            </Tile>
+                        </Tile>
+                    </Tile>
                 </Column>
             </Columns>
         )
@@ -74,7 +96,7 @@ import {Column, Columns, Subtitle, Hero, HeroBody, HeroFooter, Tabs, Container, 
         return (
             <div>
             <Hero isColor='info' isSize='medium' style={{padding: "0"}}>
-                <HeroBody>
+                <HeroBody style={{paddingTop: "10px", paddingBottom: "10px"}}>
                     <Columns isCentered>
                         <Column isSize='1/6' id="leftPanel"/>
                         <Column hasTextAlign={"centered"} isSize='1/3' id="centerPanel"/>
