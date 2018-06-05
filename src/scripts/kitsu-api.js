@@ -20,3 +20,11 @@ export async function getAnime(meta) {
     console.log(anime);
     return anime;
 }
+
+export async function getData(url) {
+    let data = await fetch(url).then((res) => {
+        return res.json();
+    });
+
+    return data;
+}
