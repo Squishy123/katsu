@@ -28,7 +28,7 @@ class Home extends React.Component {
                     temp.push(
                     <Tile isChild isSize={3} style={{padding: "10px"}} hasTextAlign={"centered"}>
                         <Card style={{height: "100%"}} style={{padding: "10px"}}>
-                            <CardHeader style={{height: "50px"}}>
+                            <CardHeader style={{height: "100px"}}>
                                 <CardHeaderTitle>
                                  <Title isSize={5}>{e.attributes.canonicalTitle}</Title>
                                 </CardHeaderTitle>

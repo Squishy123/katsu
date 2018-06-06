@@ -8,10 +8,13 @@ import styles from './topMenu.css';
 export default class TopMenu extends React.Component {
     constructor(props) {
         super(props);
+
+        this.onFormSubmit = this.onFormSubmit.bind(this);
     }
-    _handleKeyPress = (e) => {
-        if(e.key === 'Enter')
-            this.search();
+
+    onFormSubmit(e) {
+        e.preventDefault();
+        this.search();
     }
 
     search() {
@@ -22,12 +25,12 @@ export default class TopMenu extends React.Component {
     render = () => (
         <div className="base">
             <div className="center">
-            <form>
+            <form autoComplete="off" onSubmit={this.onFormSubmit}>
                 <label>
                     <FontAwesomeIcon icon={faSearch}/>
                 </label>
-                <input id="searchQuery" type="text" placeholder="What do you want to watch?" onKeyPress={this._handleKeyPress}/>
-                <button type="button" onClick={this.search}>
+                <input id="searchQuery" type="text" placeholder="What do you want to watch?"/>
+                <button type="submit">
                     Search
                 </button>
             </form>
