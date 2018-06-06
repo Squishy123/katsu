@@ -25,17 +25,17 @@ class Home extends React.Component {
                 items.data.slice(i, i+4).forEach((e) => {
                     temp.push(
                     <Tile isChild isSize={3} style={{padding: "10px"}} hasTextAlign={"centered"}>
-                        <Card style={{height: "100%"}}>
+                        <Card style={{height: "100%"}} style={{padding: "10px"}}>
                             <CardHeader style={{height: "50px"}}>
                                 <CardHeaderTitle>
-                                 <Subtitle isSize={5}>{e.attributes.canonicalTitle}</Subtitle>
+                                 <Title isSize={5}>{e.attributes.canonicalTitle}</Title>
                                 </CardHeaderTitle>
                             </CardHeader>
                             <CardImage>
                                 <Image src={e.attributes.posterImage.large}/>
                             </CardImage>
                             <CardContent>
-                                <Button href={`/animes/${e.id}/${e.attributes.canonicalTitle}`} isColor='dark' style={{borderRadius: 0}}>
+                                <Button href={`/animes/${e.id}/${e.attributes.canonicalTitle}`} isColor='dark'>
                                     Watch Now
                                 </Button>
                             </CardContent>
