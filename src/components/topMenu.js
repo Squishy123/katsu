@@ -9,6 +9,15 @@ export default class TopMenu extends React.Component {
     constructor(props) {
         super(props);
     }
+    _handleKeyPress = (e) => {
+        if(e.key === 'Enter')
+            this.search();
+    }
+
+    search() {
+        console.log("clicked")
+        window.location = `/search/${document.querySelector('#searchQuery').value}`;
+    }
 
     render = () => (
         <div className="base">
@@ -17,7 +26,7 @@ export default class TopMenu extends React.Component {
                 <label>
                     <FontAwesomeIcon icon={faSearch}/>
                 </label>
-                <input placeholder="What do you want to watch?"/>
+                <input id="searchQuery" type="text" placeholder="What do you want to watch?" onKeyPress={this._handleKeyPress}/>
                 <button type="button" onClick={this.search}>
                     Search
                 </button>

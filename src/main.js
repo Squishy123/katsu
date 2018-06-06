@@ -9,10 +9,17 @@ import TopMenu from './components/topMenu.js'
 import Home from './pages/home.js'
 import Anime from './pages/anime.js'
 import Redirect from './pages/redirect.js'
+import Search from './pages/search.js'
 
 const AnimeRouter = (props) => {
     return (
         <Anime {...props}/>
+    )
+}
+
+const SearchRouter = (props) => {
+    return(
+        <Search {...props}/>
     )
 }
 
@@ -27,6 +34,7 @@ const Main = () => (
                     <Route exact path ='/animes/:id/:keyword/' component = {AnimeRouter}/>
                     <Route exact path ='/animes/:id/:keyword/:tab' component = {AnimeRouter}/>
                     <Route exact path ='/animes/:id/:keyword/:tab/:episodeNumber' component = {AnimeRouter}/>
+                    <Route exact path='/search/:keyword' component={SearchRouter}/>
                     <Route component={Redirect}/>
                 </Switch>
             </div>

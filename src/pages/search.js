@@ -1,24 +1,18 @@
 import React from 'react';
-import { render } from 'react-dom';
-//import styles from './home.css';
+import {render} from 'react-dom';
 import * as kitsu from '../scripts/kitsu-api.js';
 import {Container, Content, Title, Card, Tile, Box, Button, CardHeader, Subtitle, CardHeaderTitle, CardImage, Image, CardContent, Media, MediaLeft} from 'bloomer';
 
-//import MediaCard from '../components/mediaCard.js';
 
-class Home extends React.Component {
-
+export default class Search extends React.Component {
     constructor(props) {
         super(props);
-        /*this.state = {
-            trendingAnime: [<h1 className="display">Trending Anime</h1>]
-        }*/
-        this.loadTrending();
-    } 
 
+        this.loadSearch();
+    }   
 
-    async loadTrending() {
-        let items = await kitsu.getTrending();
+    async loadSearch() {
+        let items = await kitsu.getSearch({query: this.props.match.params.keyword});
         let mediaList = [];
         
         for(let i = 0; i < items.data.length; i+=4) {
@@ -44,21 +38,15 @@ class Home extends React.Component {
                         </Card>
                    </Tile>)
                 });    
-        }
-
-       // this.state.trendingAnime.push(<div className="mediaList">{mediaList}</div>)
-        render(mediaList, document.querySelector('#trendingList'))
+       }
+       render(mediaList, document.querySelector('#searchResults'));
     }
 
-    render() {
+    render()  {
         return (
-            <Container style={{padding: "20px"}}>
-                <Tile isAncestor id="trendingList" isVertical>
-                </Tile>
-            </Container>)
+        <Container style={{padding: "20px"}}>
+            <Tile isAncestor id="searchResults" isVertical>
+            </Tile>
+        </Container>)
     }
-
 }
-    
-
-export default Home;
