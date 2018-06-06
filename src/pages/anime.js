@@ -67,13 +67,13 @@ import {withRouter} from 'react-router-dom';
         let player = (
             <ModalCard isFullWidth>
                 <ModalCardHeader>
-                    <ModalCardTitle>{episode.data.attributes.canonicalTitle}</ModalCardTitle>
+                    <ModalCardTitle><span style={{fontWeight: 800}}>Episode {episode.data.attributes.number}:</span> {episode.data.attributes.canonicalTitle}</ModalCardTitle>
                 </ModalCardHeader>
                 <ModalCardBody>
                     <Subtitle>Choose Source: </Subtitle>
                 </ModalCardBody>
                 <ModalCardFooter>
-                    <Title>Episodes</Title>
+                    <Subtitle>Episodes</Subtitle>
                 </ModalCardFooter>
             </ModalCard>
         )
