@@ -38,7 +38,7 @@ import { Tile, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFoote
     async buildHero(meta) {
         let centerPanel = (
             <div>
-                <Image src={meta.data.attributes.posterImage.large}></Image>
+                <img width="75%" src={meta.data.attributes.posterImage.large}></img>
                 <Title isSize={3}>{meta.data.attributes.canonicalTitle}</Title>
             </div>);
         render(centerPanel, document.querySelector('#centerPanel'))
@@ -46,7 +46,7 @@ import { Tile, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFoote
 
     async buildSummary(meta) {
         let summary = (
-            <Columns isCentered style={{paddingTop: "10px"}}>
+            <Columns isCentered style={{padding: "10px"}}>
                 <Column isSize='1/3'  hasTextAlign={"centered"}>
                     <Title isSize={4}>Summary: </Title>
                     <Subtitle isSize={5}>
