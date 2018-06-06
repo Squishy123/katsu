@@ -22,9 +22,9 @@ export async function getAnime(meta) {
 }
 
 export async function getData(url) {
-    let data = await fetch(url).then((res) => {
+    let data = await fetch(`${url}`).then((res) => {
         return res.json();
     });
-
+    console.log(data);
     return data;
 }

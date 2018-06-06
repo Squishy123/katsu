@@ -43,7 +43,6 @@ class Home extends React.Component {
                    </Tile>)
                 });    
         }
-        console.log(mediaList);
 
        // this.state.trendingAnime.push(<div className="mediaList">{mediaList}</div>)
         render(mediaList, document.querySelector('#trendingList'))

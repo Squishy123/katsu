@@ -24,7 +24,9 @@ const Main = () => (
             <div style={{padding: "75px 0 100px 0"}}>
                 <Switch>
                     <Route exact path ='/' component = {Home}/>
-                    <Route exact path ='/animes/:id/:keyword' component = {AnimeRouter}/>
+                    <Route exact path ='/animes/:id/:keyword/' component = {AnimeRouter}/>
+                    <Route exact path ='/animes/:id/:keyword/:tab' component = {AnimeRouter}/>
+                    <Route exact path ='/animes/:id/:keyword/:tab/:episodeNumber' component = {AnimeRouter}/>
                     <Route component={Redirect}/>
                 </Switch>
             </div>

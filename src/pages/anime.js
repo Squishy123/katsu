@@ -2,7 +2,14 @@ import React from 'react';
 import {render} from 'react-dom';
 import * as kitsu from '../scripts/kitsu-api.js'
 
-import { Tile, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFooter, Tabs, Container, TabList, Tab, TabLink, Image, Title} from 'bloomer';
+import { Tile, Modal, ModalContent, ModalClose, Card, CardImage, CardContent, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFooter, Tabs, Container, TabList, Tab, TabLink, Image, Title} from 'bloomer';
+
+import { faFile, faListUl, faComments, faUsers} from '@fortawesome/fontawesome-free-solid';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome'
+
+import MediaQuery from 'react-responsive';
+
+import {withRouter} from 'react-router-dom';
 
 //import styles from './anime.css'
 
@@ -17,14 +24,65 @@ import { Tile, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFoote
                 episodes: false,
                 cast: false,
                 reactions: false
-            }
+            },
+            player: {
+                active: false
+            },
+            episode: 0
         }
-        this.setActiveTab = this.setActiveTab.bind(this);
 
-        this.loadResults();
+        this.openEpisode = this.openEpisode.bind(this);
+
+        this.loadEpisode = this.loadEpisode.bind(this);
+
+        this.openPlayer = this.openPlayer.bind(this);
+
+        this.setActiveTab = this.setActiveTab.bind(this);
+        if(this.props.match.params.tab)
+            if(this.props.match.params.episodeNumber) 
+                this.setActiveTab(this.props.match.params.tab, true);
+            else 
+                this.setActiveTab(this.props.match.params.tab);
+         this.loadResults();
+
+        
+
+              //this is super inefficient and needs to be fixed
+        if(this.props.match.params.episodeNumber) {
+            this.loadEpisode();
+        }
     }
 
-    setActiveTab(tab) {
+    async loadEpisode() {
+        let episodeLinks = await kitsu.getData(`https://kitsu.io/api/edge/anime/${this.props.match.params.id}/relationships/episodes`);
+        episodeLinks.data = episodeLinks.data.sort((a, b) => {
+            return a.id - b.id;
+        })
+        let ep = await kitsu.getData(`https://kitsu.io/api/edge/episodes/${episodeLinks.data[this.props.match.params.episodeNumber-1].id}`);
+        this.openEpisode(ep)
+    }
+
+    openPlayer(episode) {
+        console.log(episode);
+        this.setState({player: {active: true}});
+    }
+
+    closePlayer() {
+        this.setState({player: {active: false}})
+    }
+
+    openEpisode(ep) {
+        console.log(ep);
+        this.setState({episode: ep.data.attributes.number});
+        let episode = (
+            <Subtitle isSize={5}><span style={{fontWeight: 800}}>Episode {ep.data.attributes.number}:</span> {ep.data.attributes.canonicalTitle}</Subtitle>
+        )
+
+        render(episode, document.querySelector('#episode'));
+        this.props.history.push(`/animes/${this.props.match.params.id}/${this.props.match.params.keyword}/episodes/${ep.data.attributes.number}`)
+    }
+
+    setActiveTab(tab, noChangeRoute) {
         let current = this.state.selectedTabs;
         Object.keys(current).forEach((e) => {
             if(e == tab)
@@ -33,6 +91,8 @@ import { Tile, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFoote
                 current[e] =false;
         });
         this.setState({selectedTabs: current});
+        if(!noChangeRoute)
+            this.props.history.push(`/animes/${this.props.match.params.id}/${this.props.match.params.keyword}/${tab}`)
     }
 
     async buildHero(meta) {
@@ -81,8 +141,43 @@ import { Tile, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFoote
     }
 
     async buildEpisodes(meta) {
-        let episodes = await kitsu.getData(meta.data.relationships.episodes.links.self);
+        let episodeLinks = await kitsu.getData(`${meta.data.relationships.episodes.links.self}`);
+        episodeLinks.data = episodeLinks.data.sort((a, b) => {
+            return a.id - b.id;
+        })
+        let promises = []
+    
+        episodeLinks.data.forEach((e, i) => {
+            if(i < 100)
+                promises.push(kitsu.getData(`https://kitsu.io/api/edge/episodes/${e.id}`));   
+        });
+        let episodes = await Promise.all(promises);
+        console.log(episodes);
+        episodes = episodes.sort((a, b) => {
+            return a.data.attributes.number - b.data.attributes.number;
+        })
+        let episodeList = [];
+        for(let i = 0; i < episodes.length; i+=4) {
+            let temp = [];
+            episodeList.push((<Tile isParent style={{padding: 0}}>{temp}</Tile>));
+            episodes.slice(i, i+4).forEach((e) => {
+                temp.push(
+                    <Tile isChild isSize={3} style={{padding: "10px"}} hasTextAlign="centered">
+                        <Card style={{height: "100%"}}>
+                            <CardImage>
+                                {e.data.attributes.thumbnail != null && <Image src={e.data.attributes.thumbnail.original}/>}
+                            </CardImage>
+                            <CardContent>
+                                <Subtitle isSize={5}><span style={{fontWeight: 800}}>Episode {e.data.attributes.number}:</span> {e.data.attributes.canonicalTitle}</Subtitle>
+                                <Button onClick={() => {this.openEpisode(e)}} isColor="dark">Watch Now</Button>
+                            </CardContent>
+                        </Card>
+                    </Tile>
+                )
+            });
+        }
 
+        render(episodeList, document.querySelector('#episodeList'));
     }
 
     async loadResults() {
@@ -104,39 +199,42 @@ import { Tile, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFoote
                     </Columns>
                 </HeroBody>
                 <HeroFooter>
-                    <Tabs isBoxed isFullWidth>
-                        <Container>
-                                <TabList>
-                                    <Tab onClick={() => this.setActiveTab('summary')} isActive={this.state.selectedTabs.summary}>
-                                        <TabLink>
-                                            Summary
-                                        </TabLink>
-                                    </Tab>
-                                    <Tab onClick={() => this.setActiveTab('episodes')} isActive={this.state.selectedTabs.episodes}>
-                                        <TabLink>
-                                            Episodes
-                                        </TabLink>
-                                    </Tab>
-                                    <Tab onClick={() => this.setActiveTab('cast')} isActive={this.state.selectedTabs.cast}>
-                                        <TabLink>
-                                            Cast
-                                        </TabLink>
-                                    </Tab>
-                                    <Tab onClick={() => this.setActiveTab('reactions')} isActive={this.state.selectedTabs.reactions}>
-                                        <TabLink>
-                                            Reactions
-                                        </TabLink>
-                                    </Tab>
-                                </TabList>
-                            </Container>
-                        </Tabs>
+                <Tabs isBoxed isFullWidth isSize="small">
+                    <Container>
+                            <TabList>
+                                <Tab onClick={() => this.setActiveTab('summary')} isActive={this.state.selectedTabs.summary}>
+                                    <TabLink>
+                                        <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faFile}/></span>Summary
+                                    </TabLink>
+                                </Tab>
+                                <Tab onClick={() => {this.setActiveTab('episodes');this.setState({episode: 0})}} isActive={this.state.selectedTabs.episodes}>
+                                    <TabLink>
+                                    <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faListUl}/></span>Episodes
+                                    </TabLink>
+                                </Tab>
+                                <Tab onClick={() => this.setActiveTab('cast')} isActive={this.state.selectedTabs.cast}>
+                                    <TabLink>
+                                    <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faUsers}/></span>Cast
+                                    </TabLink>
+                                </Tab>
+                                <Tab onClick={() => this.setActiveTab('reactions')} isActive={this.state.selectedTabs.reactions}>
+                                    <TabLink>
+                                    <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faComments}/></span>Reactions
+                                    </TabLink>
+                                </Tab>
+                            </TabList>
+                        </Container>
+                    </Tabs>
                 </HeroFooter>
             </Hero>
             <Container isFluid isHidden={!this.state.selectedTabs.summary} id="summary">
             <Title>Summary</Title>
             </Container>
             <Container isFluid isHidden={!this.state.selectedTabs.episodes} id="episodes">
-                <Title>Episodes</Title>
+                <Tile style={{padding: "20px"}} isAncestor isVertical id="episodeList" isHidden={!this.state.episode == 0}>
+                </Tile>
+                <Columns style={{padding: "20px"}} isHidden={this.state.episode == 0} id="episode">
+                </Columns>
             </Container>
             <Container isFluid isHidden={!this.state.selectedTabs.cast} id="cast">
                 <Title>Cast</Title>
@@ -149,4 +247,4 @@ import { Tile, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFoote
     }
 }
 
-export default Anime;
+export default withRouter(Anime);
