@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import * as kitsu from '../scripts/kitsu-api.js'
 
-import { Tile, Modal, ModalContent, ModalClose, Card, CardImage, CardContent, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFooter, Tabs, Container, TabList, Tab, TabLink, Image, Title} from 'bloomer';
+import { Tile, Modal, Notification, ModalContent, ModalClose, Card, CardImage, CardContent, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFooter, Tabs, Container, TabList, Tab, TabLink, Image, Title} from 'bloomer';
 
 import { faFile, faListUl, faComments, faUsers} from '@fortawesome/fontawesome-free-solid';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -75,7 +75,18 @@ import {withRouter} from 'react-router-dom';
         console.log(ep);
         this.setState({episode: ep.data.attributes.number});
         let episode = (
-            <Subtitle isSize={5}><span style={{fontWeight: 800}}>Episode {ep.data.attributes.number}:</span> {ep.data.attributes.canonicalTitle}</Subtitle>
+            <Column>
+                <Columns isCentered style={{margin: "0"}}>
+                <Column isSize={3}>
+                    <img src={ep.data.attributes.thumbnail.original}/>
+                </Column>
+                <Column isSize='1/3'>
+                    <Subtitle isSize={5} style={{marginBottom: "3px"}}><span style={{fontWeight: 800}}>Episode {ep.data.attributes.number}:</span> {ep.data.attributes.canonicalTitle}</Subtitle>
+                    <Subtitle isSize={6} style={{marginBottom: "3px"}}>{ep.data.attributes.length} minutes</Subtitle>
+                    <p>{ep.data.attributes.synopsis}</p>
+                </Column>
+                </Columns>
+            </Column>
         )
 
         render(episode, document.querySelector('#episode'));
@@ -230,10 +241,10 @@ import {withRouter} from 'react-router-dom';
             <Container isFluid isHidden={!this.state.selectedTabs.summary} id="summary">
             <Title>Summary</Title>
             </Container>
-            <Container isFluid isHidden={!this.state.selectedTabs.episodes} id="episodes">
+            <Container isHidden={!this.state.selectedTabs.episodes} id="episodes">
                 <Tile style={{padding: "20px"}} isAncestor isVertical id="episodeList" isHidden={!this.state.episode == 0}>
                 </Tile>
-                <Columns style={{padding: "20px"}} isHidden={this.state.episode == 0} id="episode">
+                <Columns isCentered style={{padding: "20px"}} isHidden={this.state.episode == 0} id="episode">
                 </Columns>
             </Container>
             <Container isFluid isHidden={!this.state.selectedTabs.cast} id="cast">
