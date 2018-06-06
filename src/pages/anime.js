@@ -2,7 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import * as kitsu from '../scripts/kitsu-api.js'
 
-import { Tile, Modal, Notification, ModalContent, ModalClose, Card, CardImage, CardContent, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFooter, Tabs, Container, TabList, Tab, TabLink, Image, Title} from 'bloomer';
+import { Tile, Modal, ModalCard, ModalCardHeader, ModalCardTitle, Delete, ModalCardBody, ModalCardFooter, ModalBackground, Notification, ModalContent, ModalClose, Card, CardImage, CardContent, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFooter, Tabs, Container, TabList, Tab, TabLink, Image, Title} from 'bloomer';
 
 import { faFile, faListUl, faComments, faUsers} from '@fortawesome/fontawesome-free-solid';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
@@ -64,6 +64,21 @@ import {withRouter} from 'react-router-dom';
 
     openPlayer(episode) {
         console.log(episode);
+        let player = (
+            <ModalCard isFullWidth>
+                <ModalCardHeader>
+                    <ModalCardTitle>{episode.data.attributes.canonicalTitle}</ModalCardTitle>
+                </ModalCardHeader>
+                <ModalCardBody>
+                    <Subtitle>Choose Source: </Subtitle>
+                </ModalCardBody>
+                <ModalCardFooter>
+                    <Title>Episodes</Title>
+                </ModalCardFooter>
+            </ModalCard>
+        )
+        render(player, document.querySelector('#player'));
+
         this.setState({player: {active: true}});
     }
 
@@ -77,8 +92,11 @@ import {withRouter} from 'react-router-dom';
         let episode = (
             <Column>
                 <Columns isCentered style={{margin: "0"}}>
-                <Column isSize={3}>
-                    <img src={ep.data.attributes.thumbnail.original}/>
+                <Column  isSize={3}>
+                    {ep.data.attributes.thumbnail != null && 
+                        <img src={ep.data.attributes.thumbnail.original}/>
+                    }
+                    <Button onClick={() => this.openPlayer(ep)}>Open Player</Button>
                 </Column>
                 <Column isSize='1/3'>
                     <Subtitle isSize={5} style={{marginBottom: "3px"}}><span style={{fontWeight: 800}}>Episode {ep.data.attributes.number}:</span> {ep.data.attributes.canonicalTitle}</Subtitle>
@@ -246,6 +264,11 @@ import {withRouter} from 'react-router-dom';
                 </Tile>
                 <Columns isCentered style={{padding: "20px"}} isHidden={this.state.episode == 0} id="episode">
                 </Columns>
+                <Modal style={{padding: "20px"}} isActive={this.state.player.active}>
+                    <ModalBackground />
+                        <ModalContent id="player"/>
+                    <ModalClose onClick={() => this.closePlayer()} style={{marginTop: "75px"}} isSize="large"/>
+                </Modal>
             </Container>
             <Container isFluid isHidden={!this.state.selectedTabs.cast} id="cast">
                 <Title>Cast</Title>

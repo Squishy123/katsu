@@ -64,7 +64,7 @@ button {
   
   @media all and (max-width:800px) {
         .center {
-            margin-left: 100px;
+            margin-left: 75px;
         }
     }
     @media all and (max-width:650px) {
