@@ -21,7 +21,7 @@ const Main = () => (
         <SideMenu/>
         <TopMenu/>
         <main id="page-wrap">
-            <div style={{padding: "0 0 100px 0", marginTop: "75px"}}>
+            <div style={{padding: "75px 0 100px 0"}}>
                 <Switch>
                     <Route exact path ='/' component = {Home}/>
                     <Route exact path ='/animes/:id/:keyword' component = {AnimeRouter}/>

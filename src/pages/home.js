@@ -24,7 +24,7 @@ class Home extends React.Component {
             mediaList.push((<Tile isParent style={{padding: 0}}>{temp}</Tile>));
                 items.data.slice(i, i+4).forEach((e) => {
                     temp.push(
-                    <Tile isChild isSize={3} style={{padding: "10px"}}>
+                    <Tile isChild isSize={3} style={{padding: "10px"}} hasTextAlign={"centered"}>
                         <Card style={{height: "100%"}}>
                             <CardHeader style={{height: "50px"}}>
                                 <CardHeaderTitle>
