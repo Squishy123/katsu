@@ -2,7 +2,6 @@
   "name": "katsu",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://squishy123.github.io/katsu",
   "dependencies": {
     "@fortawesome/fontawesome": "^1.1.8",
     "@fortawesome/fontawesome-free-solid": "^5.0.13",
