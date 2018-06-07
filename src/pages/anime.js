@@ -11,6 +11,9 @@ import MediaQuery from 'react-responsive';
 
 import {withRouter} from 'react-router-dom';
 
+//socket
+import io from 'socket.io-client';
+
 //import styles from './anime.css'
 
 //import MediaCard from '../components/mediaCard.js';
@@ -29,12 +32,19 @@ import {withRouter} from 'react-router-dom';
                 active: false,
                 source: ""
             },
-            episode: 0
+            sourceSelect: {
+                active: false
+            },
+            episode: 0,
+            socket: io('http://localhost:8000')
         }
 
         this.openEpisode = this.openEpisode.bind(this);
 
         this.loadEpisode = this.loadEpisode.bind(this);
+
+        this.openSourceSelect = this.openSourceSelect.bind(this);
+        this.closeSourceSelect = this.closeSourceSelect.bind(this);
 
         this.openPlayer = this.openPlayer.bind(this);
 
@@ -45,8 +55,6 @@ import {withRouter} from 'react-router-dom';
             else 
                 this.setActiveTab(this.props.match.params.tab);
          this.loadResults();
-
-        
 
               //this is super inefficient and needs to be fixed
         if(this.props.match.params.episodeNumber) {
@@ -63,29 +71,40 @@ import {withRouter} from 'react-router-dom';
         this.openEpisode(ep)
     }
 
-    openPlayer(episode) {
-        console.log(episode);
-        let player = (
-            <ModalCard isFullWidth>
-                <ModalCardHeader>
-                    <ModalCardTitle><span style={{fontWeight: 800}}>Episode {episode.data.attributes.number}:</span> {episode.data.attributes.canonicalTitle}</ModalCardTitle>
-                </ModalCardHeader>
-                <ModalCardBody>
-                    <Subtitle>Choose Source: </Subtitle>
-                    <Button onClick={this.openSource("9anime")} isColor="dark" isSize="large">9anime</Button>
-                </ModalCardBody>
-                <ModalCardFooter>
-                    <Subtitle>Episodes</Subtitle>
-                </ModalCardFooter>
-            </ModalCard>
-        )
-        render(player, document.querySelector('#player'));
-
-        this.setState({player: {active: true}});
+    openPlayer(episode, src) {
+        if(src == "9anime") {
+            this.setState({socket: io('http://localhost:8000/source/9anime')})
+            this.state.socket.emit('search/anime', {keyword: this.props.match.params.keyword});
+            this.state.socket.on(`search/${this.props.match.params.keyword}`, (res) => {
+                let player = (
+                    <div>
+                        res
+                    </div>
+                )
+                render(player, document.querySelector('#centerPanel'))
+            })
+        }
     }
 
-    closePlayer() {
-        this.setState({player: {active: false}})
+    openSourceSelect(episode) {
+        console.log(episode);
+        let sourceSelect = (
+            <div>
+                <ModalCardHeader>
+                    <ModalCardTitle><span style={{fontWeight: 800}}>Choose Source</span></ModalCardTitle>
+                </ModalCardHeader>
+                <ModalCardBody>
+                    <Button onClick={() => {this.closeSourceSelect(); this.openPlayer(episode, "9anime")}}isColor="dark" isSize="large">9anime</Button>
+                </ModalCardBody>
+            </div>
+        )
+        render(sourceSelect, document.querySelector('#sourceSelect'));
+
+        this.setState({sourceSelect: {active: true}});
+    }
+
+    closeSourceSelect() {
+        this.setState({sourceSelect: {active: false}})
     }
 
     openEpisode(ep) {
@@ -94,22 +113,19 @@ import {withRouter} from 'react-router-dom';
         let episode = (
             <Column>
                 <Columns isCentered style={{margin: "0"}}>
-                    <Column  isSize={3}>
-                        {ep.data.attributes.thumbnail != null && 
-                            <img src={ep.data.attributes.thumbnail.original}/>
-                        }
-                    </Column>
-                    <Column isSize='1/3'>
-                        <Subtitle isSize={5} style={{marginBottom: "3px"}}><span style={{fontWeight: 800}}>Episode {ep.data.attributes.number}:</span> {ep.data.attributes.canonicalTitle}</Subtitle>
-                        <Subtitle isSize={6} style={{marginBottom: "3px"}}>{ep.data.attributes.length} minutes</Subtitle>
-                        <p>{ep.data.attributes.synopsis}</p>
-                    </Column>
-                </Columns>
-                <Columns isCentered style={{margin: "0"}}>
-                    <Column isSize={7}> 
-                        <Subtitle isSize={4}>Choose Source: </Subtitle>
-                        <Button href={`/animes/${this.props.match.params.id}/${this.props.match.params.keyword}/episodes/watch/9anime/${this.props.match.params.episodeNumber}`} isColor="dark" isSize="medium">9anime</Button>
-                    </Column>
+                <Column  isSize={3}>
+                    {ep.data.attributes.thumbnail != null && 
+                        <img src={ep.data.attributes.thumbnail.original}/>
+                    }
+                    <Button onClick={() => this.openPlayer(ep)}>Open Player</Button>
+                    <Subtitle>Choose Source: </Subtitle>
+                    <Button href={`/animes/${this.props.match.params.id}/${this.props.match.params.keyword}/episodes/watch/9anime/${this.props.match.params.episodeNumber}`} isColor="dark" isSize="large">9anime</Button>
+                </Column>
+                <Column isSize='1/3'>
+                    <Subtitle isSize={5} style={{marginBottom: "3px"}}><span style={{fontWeight: 800}}>Episode {ep.data.attributes.number}:</span> {ep.data.attributes.canonicalTitle}</Subtitle>
+                    <Subtitle isSize={6} style={{marginBottom: "3px"}}>{ep.data.attributes.length} minutes</Subtitle>
+                    <p>{ep.data.attributes.synopsis}</p>
+                </Column>
                 </Columns>
             </Column>
         )
@@ -188,7 +204,7 @@ import {withRouter} from 'react-router-dom';
                 promises.push(kitsu.getData(`https://kitsu.io/api/edge/episodes/${e.id}`));   
         });
         let episodes = await Promise.all(promises);
-        console.log(episodes);
+        //console.log(episodes);
         episodes = episodes.sort((a, b) => {
             return a.data.attributes.number - b.data.attributes.number;
         })
@@ -205,7 +221,7 @@ import {withRouter} from 'react-router-dom';
                             </CardImage>
                             <CardContent>
                                 <Subtitle isSize={5}><span style={{fontWeight: 800}}>Episode {e.data.attributes.number}:</span> {e.data.attributes.canonicalTitle}</Subtitle>
-                                <Button onClick={() => {this.openEpisode(e)}} isColor="dark">Watch Now</Button>
+                                <Button onClick={() => this.openSourceSelect(e)} isColor="dark">Watch Now</Button>
                             </CardContent>
                         </Card>
                     </Tile>
@@ -271,10 +287,10 @@ import {withRouter} from 'react-router-dom';
                 </Tile>
                 <Columns isCentered style={{padding: "20px"}} isHidden={this.state.episode == 0} id="episode">
                 </Columns>
-                <Modal style={{padding: "20px"}} isActive={this.state.player.active}>
+                <Modal style={{padding: "20px"}} isActive={this.state.sourceSelect.active} >
                     <ModalBackground />
-                        <ModalContent id="player"/>
-                    <ModalClose onClick={() => this.closePlayer()} style={{marginTop: "75px"}} isSize="large"/>
+                    <ModalCard id="sourceSelect" />
+                    <ModalClose onClick={() => this.closeSourceSelect()} style={{marginTop: "75px"}} isSize="large"/>
                 </Modal>
             </Container>
             <Container isFluid isHidden={!this.state.selectedTabs.cast} id="cast">

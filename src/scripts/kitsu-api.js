@@ -25,6 +25,6 @@ export async function getData(url) {
     let data = await fetch(`${url}`).then((res) => {
         return res.json();
     });
-    console.log(data);
+    //console.log(data);
     return data;
 }
