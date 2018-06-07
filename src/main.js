@@ -10,6 +10,8 @@ import Home from './pages/home.js'
 import Anime from './pages/anime.js'
 import Redirect from './pages/redirect.js'
 import Search from './pages/search.js'
+import Watch from './pages/watch.js'
+
 
 const AnimeRouter = (props) => {
     return (
@@ -20,6 +22,12 @@ const AnimeRouter = (props) => {
 const SearchRouter = (props) => {
     return(
         <Search {...props}/>
+    )
+}
+
+const WatchRouter = (props) => {
+    return(
+        <Watch {...props}/>
     )
 }
 
@@ -34,6 +42,9 @@ const Main = () => (
                     <Route exact path ='/animes/:id/:keyword/' component = {AnimeRouter}/>
                     <Route exact path ='/animes/:id/:keyword/:tab' component = {AnimeRouter}/>
                     <Route exact path ='/animes/:id/:keyword/:tab/:episodeNumber' component = {AnimeRouter}/>
+
+                    <Route exact path='/animes/:id/:keyword/episodes/watch/:source/:episodeNumber' component = {WatchRouter}/>
+
                     <Route exact path='/search/:keyword' component={SearchRouter}/>
                     <Route component={Redirect}/>
                 </Switch>

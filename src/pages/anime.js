@@ -26,7 +26,8 @@ import {withRouter} from 'react-router-dom';
                 reactions: false
             },
             player: {
-                active: false
+                active: false,
+                source: ""
             },
             episode: 0
         }
@@ -71,6 +72,7 @@ import {withRouter} from 'react-router-dom';
                 </ModalCardHeader>
                 <ModalCardBody>
                     <Subtitle>Choose Source: </Subtitle>
+                    <Button onClick={this.openSource("9anime")} isColor="dark" isSize="large">9anime</Button>
                 </ModalCardBody>
                 <ModalCardFooter>
                     <Subtitle>Episodes</Subtitle>
@@ -92,17 +94,22 @@ import {withRouter} from 'react-router-dom';
         let episode = (
             <Column>
                 <Columns isCentered style={{margin: "0"}}>
-                <Column  isSize={3}>
-                    {ep.data.attributes.thumbnail != null && 
-                        <img src={ep.data.attributes.thumbnail.original}/>
-                    }
-                    <Button onClick={() => this.openPlayer(ep)}>Open Player</Button>
-                </Column>
-                <Column isSize='1/3'>
-                    <Subtitle isSize={5} style={{marginBottom: "3px"}}><span style={{fontWeight: 800}}>Episode {ep.data.attributes.number}:</span> {ep.data.attributes.canonicalTitle}</Subtitle>
-                    <Subtitle isSize={6} style={{marginBottom: "3px"}}>{ep.data.attributes.length} minutes</Subtitle>
-                    <p>{ep.data.attributes.synopsis}</p>
-                </Column>
+                    <Column  isSize={3}>
+                        {ep.data.attributes.thumbnail != null && 
+                            <img src={ep.data.attributes.thumbnail.original}/>
+                        }
+                    </Column>
+                    <Column isSize='1/3'>
+                        <Subtitle isSize={5} style={{marginBottom: "3px"}}><span style={{fontWeight: 800}}>Episode {ep.data.attributes.number}:</span> {ep.data.attributes.canonicalTitle}</Subtitle>
+                        <Subtitle isSize={6} style={{marginBottom: "3px"}}>{ep.data.attributes.length} minutes</Subtitle>
+                        <p>{ep.data.attributes.synopsis}</p>
+                    </Column>
+                </Columns>
+                <Columns isCentered style={{margin: "0"}}>
+                    <Column isSize={7}> 
+                        <Subtitle isSize={4}>Choose Source: </Subtitle>
+                        <Button href={`/animes/${this.props.match.params.id}/${this.props.match.params.keyword}/episodes/watch/9anime/${this.props.match.params.episodeNumber}`} isColor="dark" isSize="medium">9anime</Button>
+                    </Column>
                 </Columns>
             </Column>
         )
