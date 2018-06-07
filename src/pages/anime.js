@@ -213,6 +213,7 @@ import io from 'socket.io-client';
             let temp = [];
             episodeList.push((<Tile isParent style={{padding: 0}}>{temp}</Tile>));
             episodes.slice(i, i+4).forEach((e) => {
+                if(e.data.attributes.canonicalTitle != `Episode ${e.data.attributes.number}`)
                 temp.push(
                     <Tile isChild isSize={3} style={{padding: "10px"}} hasTextAlign="centered">
                         <Card style={{height: "100%"}}>
