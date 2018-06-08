@@ -11,6 +11,10 @@ import MediaQuery from 'react-responsive';
 
 import {withRouter} from 'react-router-dom';
 
+//inclass components
+import EpisodeTile from '../components/episodeTile.js';
+import EpisodeSummary from '../components/episodeSummary.js';
+
 //socket
 import io from 'socket.io-client';
 
@@ -154,42 +158,35 @@ import io from 'socket.io-client';
                 <Title isSize={3}>{meta.data.attributes.canonicalTitle}</Title>
             </div>);
         render(centerPanel, document.querySelector('#centerPanel'))
+        
+        //this.setState({socket: io('http://localhost:8000/source/9anime')})
+        this.setState({socket: io('http://localhost:8000/api/edge')})
+        this.state.socket.emit('anime', {title: this.props.match.params.keyword});
+        //this.state.socket.emit('search/anime', {keyword: this.props.match.params.keyword});
+        //this.state.socket.on(`search/${this.props.match.params.keyword}`, (res) => {
+        this.state.socket.on(`anime/${this.props.match.params.keyword}`, (res) => {
+            if(res) {
+            console.log(res);
+            //todo fix backend to remove top layer array index
+            let searchResults = res.map((sr) => 
+                (
+                    <div>
+                        <h1>{sr.title}</h1>
+                    </div>
+                ));
+            let player = (
+                <div>
+                    {searchResults}
+                </div>
+            )
+            render(player, document.querySelector('#centerPanel'))
+        } else console.log("No Animes Found!")
+        })
+        
     }
 
     async buildSummary(meta) {
-        let summary = (
-            <Columns isCentered style={{padding: "10px"}}>
-                <Column isSize='1/3'  hasTextAlign={"centered"}>
-                    <Title isSize={4}>Summary: </Title>
-                    <Subtitle isSize={5}>
-                        {meta.data.attributes.synopsis}
-                    </Subtitle>
-                </Column>
-                <Column isSize={3}>
-                    <Tile isAncestor>
-                        <Tile isVertical isParent>
-                            <Tile isChild hasTextAlign={"centered"}>
-                                <Box>
-                                    <Button isFullWidth={true} href={`https://www.youtube.com/watch?v=${meta.data.attributes.youtubeVideoId}`} isColor="dark">Watch Trailer</Button>
-                                </Box>
-                            </Tile>
-                            <Tile isChild>
-                                <Box>
-                                    <Title style={{margin: 5}} isSize={5}>Anime Details</Title>
-                                    <Subtitle style={{margin: 5}} isSize={6}>English: {meta.data.attributes.titles["en"]}</Subtitle>
-                                    <Subtitle  style={{margin: 5}} isSize={6}>Japanese: {meta.data.attributes.titles["ja_jp"]}</Subtitle>
-                                    <Subtitle  style={{margin: 5}} isSize={6}>Type: {meta.data.attributes.showType}</Subtitle>
-                                    <Subtitle  style={{margin: 5}} isSize={6}>Episodes: {meta.data.attributes.episodeCount}</Subtitle>
-                                    <Subtitle  style={{margin: 5}} isSize={6}>Aired: {meta.data.attributes.startDate} to {meta.data.attributes.endDate} </Subtitle>
-                                    <Subtitle  style={{margin: 5}} isSize={6}>Rating: {meta.data.attributes.ageRating}-{meta.data.attributes.ageRatingGuide}</Subtitle>
-                                </Box>
-                            </Tile>
-                        </Tile>
-                    </Tile>
-                </Column>
-            </Columns>
-        )
-        render(summary, document.querySelector('#summary'));
+        render(<EpisodeSummary meta={meta}/>, document.querySelector('#summary'));
     }
 
     async buildEpisodes(meta) {
@@ -214,19 +211,7 @@ import io from 'socket.io-client';
             episodeList.push((<Tile isParent style={{padding: 0}}>{temp}</Tile>));
             episodes.slice(i, i+4).forEach((e) => {
                 if(e.data.attributes.canonicalTitle != `Episode ${e.data.attributes.number}`)
-                temp.push(
-                    <Tile isChild isSize={3} style={{padding: "10px"}} hasTextAlign="centered">
-                        <Card style={{height: "100%"}}>
-                            <CardImage>
-                                {e.data.attributes.thumbnail != null && <Image src={e.data.attributes.thumbnail.original}/>}
-                            </CardImage>
-                            <CardContent>
-                                <Subtitle isSize={5}><span style={{fontWeight: 800}}>Episode {e.data.attributes.number}:</span> {e.data.attributes.canonicalTitle}</Subtitle>
-                                <Button onClick={() => this.openSourceSelect(e)} isColor="dark">Watch Now</Button>
-                            </CardContent>
-                        </Card>
-                    </Tile>
-                )
+                temp.push(<EpisodeTile meta={e}/>)
             });
         }
 
@@ -243,63 +228,63 @@ import io from 'socket.io-client';
     render() {
         return (
             <div>
-            <Hero isColor='info' isSize='medium' style={{padding: "0"}}>
-                <HeroBody style={{paddingTop: "10px", paddingBottom: "10px"}}>
-                    <Columns isCentered>
-                        <Column isSize='1/6' id="leftPanel"/>
-                        <Column hasTextAlign={"centered"} isSize='1/3' id="centerPanel"/>
-                        <Column isSize='1/6' id='rightPanel'/>
+                <Hero isColor='info' isSize='medium' style={{padding: "0"}}>
+                    <HeroBody style={{paddingTop: "10px", paddingBottom: "10px"}}>
+                        <Columns isCentered>
+                            <Column isSize='1/6' id="leftPanel"/>
+                            <Column hasTextAlign={"centered"} isSize='1/3' id="centerPanel"/>
+                            <Column isSize='1/6' id='rightPanel'/>
+                        </Columns>
+                    </HeroBody>
+                    <HeroFooter>
+                    <Tabs isBoxed isFullWidth isSize="small">
+                        <Container>
+                                <TabList>
+                                    <Tab onClick={() => this.setActiveTab('summary')} isActive={this.state.selectedTabs.summary}>
+                                        <TabLink>
+                                            <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faFile}/></span>Summary
+                                        </TabLink>
+                                    </Tab>
+                                    <Tab onClick={() => {this.setActiveTab('episodes');this.setState({episode: 0})}} isActive={this.state.selectedTabs.episodes}>
+                                        <TabLink>
+                                        <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faListUl}/></span>Episodes
+                                        </TabLink>
+                                    </Tab>
+                                    <Tab onClick={() => this.setActiveTab('cast')} isActive={this.state.selectedTabs.cast}>
+                                        <TabLink>
+                                        <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faUsers}/></span>Cast
+                                        </TabLink>
+                                    </Tab>
+                                    <Tab onClick={() => this.setActiveTab('reactions')} isActive={this.state.selectedTabs.reactions}>
+                                        <TabLink>
+                                        <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faComments}/></span>Reactions
+                                        </TabLink>
+                                    </Tab>
+                                </TabList>
+                            </Container>
+                        </Tabs>
+                    </HeroFooter>
+                </Hero>
+                <Container isFluid isHidden={!this.state.selectedTabs.summary} id="summary">
+                <Title>Summary</Title>
+                </Container>
+                <Container isHidden={!this.state.selectedTabs.episodes} id="episodes">
+                    <Tile style={{padding: "20px"}} isAncestor isVertical id="episodeList" isHidden={!this.state.episode == 0}>
+                    </Tile>
+                    <Columns isCentered style={{padding: "20px"}} isHidden={this.state.episode == 0} id="episode">
                     </Columns>
-                </HeroBody>
-                <HeroFooter>
-                <Tabs isBoxed isFullWidth isSize="small">
-                    <Container>
-                            <TabList>
-                                <Tab onClick={() => this.setActiveTab('summary')} isActive={this.state.selectedTabs.summary}>
-                                    <TabLink>
-                                        <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faFile}/></span>Summary
-                                    </TabLink>
-                                </Tab>
-                                <Tab onClick={() => {this.setActiveTab('episodes');this.setState({episode: 0})}} isActive={this.state.selectedTabs.episodes}>
-                                    <TabLink>
-                                    <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faListUl}/></span>Episodes
-                                    </TabLink>
-                                </Tab>
-                                <Tab onClick={() => this.setActiveTab('cast')} isActive={this.state.selectedTabs.cast}>
-                                    <TabLink>
-                                    <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faUsers}/></span>Cast
-                                    </TabLink>
-                                </Tab>
-                                <Tab onClick={() => this.setActiveTab('reactions')} isActive={this.state.selectedTabs.reactions}>
-                                    <TabLink>
-                                    <span style={{paddingRight: "10px"}}><FontAwesomeIcon icon={faComments}/></span>Reactions
-                                    </TabLink>
-                                </Tab>
-                            </TabList>
-                        </Container>
-                    </Tabs>
-                </HeroFooter>
-            </Hero>
-            <Container isFluid isHidden={!this.state.selectedTabs.summary} id="summary">
-            <Title>Summary</Title>
-            </Container>
-            <Container isHidden={!this.state.selectedTabs.episodes} id="episodes">
-                <Tile style={{padding: "20px"}} isAncestor isVertical id="episodeList" isHidden={!this.state.episode == 0}>
-                </Tile>
-                <Columns isCentered style={{padding: "20px"}} isHidden={this.state.episode == 0} id="episode">
-                </Columns>
-                <Modal style={{padding: "20px"}} isActive={this.state.sourceSelect.active} >
-                    <ModalBackground />
-                    <ModalCard id="sourceSelect" />
-                    <ModalClose onClick={() => this.closeSourceSelect()} style={{marginTop: "75px"}} isSize="large"/>
-                </Modal>
-            </Container>
-            <Container isFluid isHidden={!this.state.selectedTabs.cast} id="cast">
-                <Title>Cast</Title>
-            </Container>
-            <Container isFluid isHidden={!this.state.selectedTabs.reactions} id="reactions">
-                <Title>Reactions</Title>
-            </Container>
+                    <Modal style={{padding: "20px"}} isActive={this.state.sourceSelect.active} >
+                        <ModalBackground />
+                        <ModalCard id="sourceSelect" />
+                        <ModalClose onClick={() => this.closeSourceSelect()} style={{marginTop: "75px"}} isSize="large"/>
+                    </Modal>
+                </Container>
+                <Container isFluid isHidden={!this.state.selectedTabs.cast} id="cast">
+                    <Title>Cast</Title>
+                </Container>
+                <Container isFluid isHidden={!this.state.selectedTabs.reactions} id="reactions">
+                    <Title>Reactions</Title>
+                </Container>
             </div>
         );
     }
