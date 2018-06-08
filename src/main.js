@@ -42,7 +42,7 @@ const Main = () => (
                     <Route exact path ='/animes/:id/:keyword/' component = {AnimeRouter}/>
                     <Route exact path ='/animes/:id/:keyword/:tab' component = {AnimeRouter}/>
                     <Route exact path ='/animes/:id/:keyword/:tab/:episodeNumber' component = {AnimeRouter}/>
-                    <Route exact path='/animes/:id/:keyword/episodes/watch/:source/:episodeNumber' component = {AnimeRouter}/>
+                    <Route exact path='/animes/:id/:keyword/episodes/watch/:source/:episodeNumber' component = {WatchRouter}/>
                     <Route exact path='/search/:keyword' component={SearchRouter}/>
                     <Route component={Redirect}/>
                 </Switch>

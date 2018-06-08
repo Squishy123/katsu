@@ -159,12 +159,12 @@ import io from 'socket.io-client';
             </div>);
         render(centerPanel, document.querySelector('#centerPanel'))
         
-        //this.setState({socket: io('http://localhost:8000/source/9anime')})
-        this.setState({socket: io('http://localhost:8000/api/edge')})
-        this.state.socket.emit('anime', {title: this.props.match.params.keyword});
-        //this.state.socket.emit('search/anime', {keyword: this.props.match.params.keyword});
-        //this.state.socket.on(`search/${this.props.match.params.keyword}`, (res) => {
-        this.state.socket.on(`anime/${this.props.match.params.keyword}`, (res) => {
+        this.setState({socket: io('http://localhost:8000/source/9anime')})
+        //this.setState({socket: io('http://localhost:8000/api/edge')})
+        //this.state.socket.emit('anime', {title: this.props.match.params.keyword});
+        this.state.socket.emit('search/anime', {keyword: this.props.match.params.keyword});
+        this.state.socket.on(`search/${this.props.match.params.keyword}`, (res) => {
+        //this.state.socket.on(`anime/${this.props.match.params.keyword}`, (res) => {
             if(res) {
             console.log(res);
             //todo fix backend to remove top layer array index
