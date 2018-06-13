@@ -4,7 +4,7 @@ import * as kitsu from '../scripts/kitsu-api.js'
 
 import { Tile, Modal, ModalCard, ModalCardHeader, ModalCardTitle, Delete, ModalCardBody, ModalCardFooter, ModalBackground, Notification, ModalContent, ModalClose, Card, CardImage, CardContent, Button, Box, Column, Columns, Subtitle, Hero, HeroBody, HeroFooter, Tabs, Container, TabList, Tab, TabLink, Image, Title} from 'bloomer';
 
-import { faFile, faListUl, faComments, faUsers} from '@fortawesome/fontawesome-free-solid';
+import { faFile, faListUl, faComments, faUsers, faPlay } from '@fortawesome/fontawesome-free-solid';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome'
 
 import MediaQuery from 'react-responsive';
@@ -14,6 +14,7 @@ import {withRouter} from 'react-router-dom';
 //inclass components
 import EpisodeTile from '../components/episodeTile.js';
 import EpisodeSummary from '../components/episodeSummary.js';
+import AnimeSummary from '../components/animeSummary.js';
 
 //socket
 import io from 'socket.io-client';
@@ -154,7 +155,7 @@ import io from 'socket.io-client';
     async buildHero(meta) {
         let centerPanel = (
             <div>
-                <img width="75%" src={meta.data.attributes.posterImage.large}></img>
+                <img style={{zIndex:1}} width="75%" src={meta.data.attributes.posterImage.large}/>
                 <Title isSize={3}>{meta.data.attributes.canonicalTitle}</Title>
             </div>);
         render(centerPanel, document.querySelector('#centerPanel'))
@@ -186,7 +187,7 @@ import io from 'socket.io-client';
     }
 
     async buildSummary(meta) {
-        render(<EpisodeSummary meta={meta}/>, document.querySelector('#summary'));
+        render(<AnimeSummary meta={meta}/>, document.querySelector('#summary'));
     }
 
     async buildEpisodes(meta) {
