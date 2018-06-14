@@ -15,6 +15,7 @@ export default class Watch extends React.Component {
         this.state = {
             animeMeta: {},
             episodeMeta: {},
+            episodes: [],
             currentEpisode: "",
             apiSocket: io('http://localhost:8000/api/edge'),
             nineSocket: io('http://localhost:8000/source/9anime')
@@ -84,24 +85,35 @@ export default class Watch extends React.Component {
             this.state.apiSocket.emit(`anime`, { title: res[0][0].title });
             this.state.apiSocket.on(`anime/${res[0][0].title}`, (resu) => {
                 if (resu) {
-                    if (resu[0].episodes)
                     resu[0].episodes.forEach(e => {
-                            this.state.apiSocket.emit(`episode`, { _id: e });
-                            this.state.apiSocket.on(`episode/${e}`, (res) => {
-                                console.log(res[0].sources[0].player);
-                            })
+                        this.state.apiSocket.emit(`episode`, { _id: e });
+                        this.state.apiSocket.on(`episode/${e}`, (res) => {
+                            this.state.episodes.push(res[0]);
+                            this.state.episodes.sort((a, b) => {
+                                return a.id - b.id;
+                            });
+                            console.log(this.state.episodes)
+                            if (this.state.episodes.length > this.props.match.params.episodeNumber) {
+                                let player = (
+                                <div style={{position: "relative", padding: "56.25% 0 30px 0", height: 0, overflow: "hidden"}}>
+                                     <iframe style={{position: "absolute", top: 0, left: 0, width: "100%", height: "100%"}} src={this.state.episodes[this.props.match.params.episodeNumber - 1].sources[0].player} sandbox="" allowfullscreen="true"/>
+                                </div>
+                                )
+                                render(player, document.querySelector('#player'));
+                            }
                         });
+                    });
                 } else {
-                    console.log(null);
-                }
-                let rb = (
-                    <div>
-                        <Button isColor="dark" onClick={() => this.requestAnime(res[0][0].href, res[0][0].title)}>Request</Button>
-                        <Button isColor="dark" onClick={() => this.getAnime()}>Watch</Button>
-                    </div>
-                )
+                    let rb = (
+                        <div>
+                            <Button isColor="dark" onClick={() => this.requestAnime(res[0][0].href, res[0][0].title)}>Request</Button>
+                            <Button isColor="dark" onClick={() => this.getAnime()}>Watch</Button>
+                        </div>
+                    )
 
-                render(rb, document.querySelector('#player'))
+                    render(rb, document.querySelector('#player'))
+                }
+
             })
         });
     }
@@ -112,8 +124,8 @@ export default class Watch extends React.Component {
                 <Hero isColor='info' isSize='medium' style={{ padding: "0" }}>
                     <HeroBody style={{ paddingTop: "10px", paddingBottom: "10px" }}>
                         <Columns isCentered>
-                            <Column id="player" />
-                            <Column id="episodes" />
+                            <Column isSize={6} id="player" hasTextAlign="centered">
+                            </Column>
                         </Columns>
                     </HeroBody>
                 </Hero>
