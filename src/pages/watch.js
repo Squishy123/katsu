@@ -17,8 +17,8 @@ export default class Watch extends React.Component {
             episodeMeta: {},
             episodes: [],
             currentEpisode: "",
-            apiSocket: io('http://localhost:8000/api/edge'),
-            nineSocket: io('http://localhost:8000/source/9anime')
+            apiSocket: (window.location.href.includes('localhost')) ? io('http://localhost:8000/api/edge') : io('http://10.242.124.211:8000/api/edge'),
+            nineSocket: (window.location.href.includes('localhost')) ? io('http://localhost:8000/source/9anime') : io('http://10.242.124.211:8000/source/9anime')
         }
 
         this.loadAnimeMetadata = this.loadAnimeMetadata.bind(this);

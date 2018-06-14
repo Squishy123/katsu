@@ -211,7 +211,7 @@ import io from 'socket.io-client';
             let temp = [];
             episodeList.push((<Tile isParent style={{padding: 0}}>{temp}</Tile>));
             episodes.slice(i, i+4).forEach((e) => {
-                if(e.data.attributes.canonicalTitle != `Episode ${e.data.attributes.number}`)
+               // if(e.data.attributes.canonicalTitle != `Episode ${e.data.attributes.number}`)
                 temp.push(<EpisodeTile meta={e} goto={`/animes/${this.props.match.params.id}/${this.props.match.params.keyword}/episodes/watch/9anime/${e.data.attributes.number}`}/>)
             });
         }
