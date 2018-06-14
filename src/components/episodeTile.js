@@ -20,7 +20,7 @@ export default class EpisodeTile extends React.Component {
                 </CardImage>
                 <CardContent>
                     <Subtitle isSize={5}><span style={{fontWeight: 800}}>Episode {this.props.meta.data.attributes.number}:</span> {this.props.meta.data.attributes.canonicalTitle}</Subtitle>
-                    <Button isColor="dark">Watch Now</Button>
+                    <Button isColor="dark" href={this.props.goto}>Watch Now</Button>
                 </CardContent>
             </Card>
         </Tile>

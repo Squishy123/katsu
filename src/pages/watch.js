@@ -93,7 +93,7 @@ export default class Watch extends React.Component {
                                 return a.id - b.id;
                             });
                             console.log(this.state.episodes)
-                            if (this.state.episodes.length > this.props.match.params.episodeNumber) {
+                            if (this.state.episodes.length >= this.props.match.params.episodeNumber) {
                                 let player = (
                                 <div style={{position: "relative", padding: "56.25% 0 30px 0", height: 0, overflow: "hidden"}}>
                                      <iframe style={{position: "absolute", top: 0, left: 0, width: "100%", height: "100%"}} src={this.state.episodes[this.props.match.params.episodeNumber - 1].sources[0].player} sandbox="" allowfullscreen="true"/>
